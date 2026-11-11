@@ -20,9 +20,9 @@ På LIA kommer du in i en kodbas som någon annan har skrivit. Copilot kan hjäl
 
 Prova till exempel:
 
-- "Vilka projekt finns i lösningen och hur beror de på varandra?"
-- "Var hämtas bokningarna som visas på sidan /bookings?"
-- "Varför ligger `IBookingRepository` i Application och inte i Infrastructure?"
+- "Which projects are in the solution, and how do they depend on each other?"
+- "Where does the data shown on the /bookings page come from?"
+- "Why is `IBookingRepository` in Application and not in Infrastructure?"
 
 **Kontrollera:** öppna filerna Copilot pekar på. Stämmer svaret med koden?
 
@@ -38,35 +38,40 @@ Nu ska du bygga något själv, med Copilot som lärare. Använd **Ask-läget**, 
 
 Gör så här:
 
-1. **Be om en plan, inte kod.** Till exempel: "Hur bygger jag en filtrering per rum på bokningssidan, med lagren vi har? Ge mig stegen, inte färdig kod."
+1. **Be om en plan, inte kod.** Till exempel: "How do I build a room filter on the bookings page, following the layers we have? Give me the steps, not finished code."
 2. **Granska planen.** Hamnar logiken i rätt lager? Är det på kursens nivå, eller överkurs?
 3. **Gör ett steg i taget själv.** Fråga när du fastnar.
-4. **Fråga varför.** "Varför gör vi så här? Vilka alternativ finns?"
+4. **Fråga varför.** "Why do we do it this way? What are the alternatives?"
 5. **Kolla dokumentationen** för minst en sak, till exempel `InputSelect` på Microsoft Learn.
 
 > **Stopp:** är det överkurs? Kan alla i gruppen förklara varje rad?
 
 ### Bra frågor att ställa till Copilot
 
-- "Ge mig stegen, inte koden."
-- "Förklara det som för en nybörjare."
-- "Vilka alternativ finns, och varför väljer du det här?"
-- "Är det här vanligt i Blazor, eller överkurs?"
-- "Vad kan gå fel med den här lösningen?"
+- "Give me the steps, not the code."
+- "Explain it like I'm a beginner."
+- "What are the alternatives, and why did you choose this one?"
+- "Is this a common way to do it in Blazor, or too advanced for a beginner?"
+- "What could go wrong with this solution?"
 
 ---
 
 ## Steg 3. Felsök (15 min)
 
-Gå till **Ny bokning**, fyll i ett namn och tryck **Boka** utan att ändra rummet. Appen kraschar.
+Starta appen med **F5** i Visual Studio. Gå till **Ny bokning**, fyll i ett namn och tryck **Boka** utan att ändra rummet. Appen kraschar och debuggern stannar på raden med felet.
 
-1. **Hitta felmeddelandet.** Det står i terminalen (eller fönstret Output i Visual Studio) där appen körs. Vilken typ av fel är det, och på vilken rad?
-2. **Läs det själv först.** Vad tror du att det betyder? Visar Visual Studio någon varning på samma rad?
-3. **Be Copilot förklara felet.** Klistra in felmeddelandet, men be om en förklaring, inte en lösning.
-4. **Rätta felet** när du förstår orsaken. Tips: felet syns i en fil, men orsaken finns i en annan.
-5. Kör testerna med `dotnet test` och kontrollera att de går igenom.
+1. **Läs felet själv först, utan Copilot.** Vilken typ av fel är det, och på vilken rad? Visar Visual Studio någon varning på samma rad?
+2. **Skriv ner en gissning tillsammans med grannen.** Vilket värde är null, och varför?
+3. **Fråga Copilot.** Klicka på **Analyze with Copilot** i rutan med felet. Jämför svaret med er gissning.
+4. **Kontrollera det Copilot påstår.** Håll musen över värdena i debuggern. Stämmer det Copilot säger?
+5. **Välj rättning.** Copilot kan föreslå flera sätt att rätta felet. Välj inte direkt. Diskutera vad som händer med varje alternativ, och om ett räcker eller om det behövs fler.
+6. Kör testerna med `dotnet test` och kontrollera att de går igenom.
 
-> **Stopp:** vad var orsaken? Var kraschade det, och varför hände det just där? Hur hade du kunnat hitta felet utan AI?
+Tips: felet syns i en fil, men orsaken finns i en annan.
+
+> **Stopp:** var kraschade det, och varför hände det just där? Vilken rättning valde ni, och varför räcker inte bara en av dem?
+
+Kör du appen med `dotnet run` istället för F5 står felet i terminalen. Klistra då in felmeddelandet i Copilot Chat och be om en förklaring, inte en lösning.
 
 ---
 
@@ -78,7 +83,7 @@ Nu får Copilot skriva koden åt dig. Jämför med steg 2: när AI skriver koden
 
 Byt till **Agent-läget** och skriv till exempel:
 
-> "Lägg till möjlighet att avboka en bokning. Det ska finnas en knapp på varje rad på bokningssidan. Följ lagren i projektet och lägg till ett test för avbokningen."
+> "Add a way to cancel a booking. There should be a button on each row of the bookings page. Follow the layers in the project and add a test for cancelling."
 
 Acceptera inget direkt. **Granska diffen** fil för fil:
 
