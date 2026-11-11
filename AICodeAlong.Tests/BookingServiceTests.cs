@@ -42,4 +42,37 @@ public class BookingServiceTests
         Assert.False(result.Success);
         Assert.Equal("Rummet finns inte.", result.ErrorMessage);
     }
+
+    [Fact]
+    public void Cancel_ExistingBooking_RemovesIt()
+    {
+        // Arrange
+        var rooms = new FakeRoomRepository(new Room { Id = 1, Name = "Grupprum Björk", Capacity = 4 });
+        var bookings = new FakeBookingRepository();
+        var service = new BookingService(bookings, rooms);
+        service.Create(new Booking { RoomId = 1, BookedBy = "Sara", Date = Tomorrow, Guests = 2 });
+        var bookingId = bookings.Bookings[0].Id;
+
+        // Act
+        var cancelled = service.Cancel(bookingId);
+
+        // Assert
+        Assert.True(cancelled);
+        Assert.Empty(bookings.Bookings);
+    }
+
+    [Fact]
+    public void Cancel_BookingDoesNotExist_ReturnsFalse()
+    {
+        // Arrange
+        var rooms = new FakeRoomRepository();
+        var bookings = new FakeBookingRepository();
+        var service = new BookingService(bookings, rooms);
+
+        // Act
+        var cancelled = service.Cancel(99);
+
+        // Assert
+        Assert.False(cancelled);
+    }
 }

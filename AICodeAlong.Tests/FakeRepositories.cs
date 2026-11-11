@@ -29,4 +29,9 @@ public class FakeBookingRepository : IBookingRepository
         booking.Id = Bookings.Count + 1;
         Bookings.Add(booking);
     }
+
+    public bool Remove(int bookingId)
+    {
+        return Bookings.RemoveAll(b => b.Id == bookingId) > 0;
+    }
 }

@@ -19,4 +19,16 @@ public class InMemoryBookingRepository : IBookingRepository
         booking.Id = _bookings.Count == 0 ? 1 : _bookings.Max(b => b.Id) + 1;
         _bookings.Add(booking);
     }
+
+    public bool Remove(int bookingId)
+    {
+        var booking = _bookings.FirstOrDefault(b => b.Id == bookingId);
+        if (booking is null)
+        {
+            return false;
+        }
+
+        _bookings.Remove(booking);
+        return true;
+    }
 }

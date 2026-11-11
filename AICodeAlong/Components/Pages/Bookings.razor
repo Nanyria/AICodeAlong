@@ -31,6 +31,7 @@ else
                 <th>Rum</th>
                 <th>Bokat av</th>
                 <th>Antal personer</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -41,6 +42,11 @@ else
                     <td>@booking.RoomName</td>
                     <td>@booking.BookedBy</td>
                     <td>@booking.Guests</td>
+                    <td>
+                        <button class="btn btn-outline-danger btn-sm" @onclick="() => Cancel(booking.BookingId)">
+                            Avboka
+                        </button>
+                    </td>
                 </tr>
             }
         </tbody>
@@ -63,5 +69,11 @@ else
     private void LoadBookings()
     {
         bookings = BookingService.GetUpcoming(selectedRoomId);
+    }
+
+    private void Cancel(int bookingId)
+    {
+        BookingService.Cancel(bookingId);
+        LoadBookings();
     }
 }

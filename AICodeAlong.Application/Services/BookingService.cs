@@ -70,6 +70,12 @@ public class BookingService
         return BookingResult.Ok();
     }
 
+    // Avbokar en bokning. Returnerar false om bokningen inte fanns.
+    public bool Cancel(int bookingId)
+    {
+        return _bookingRepository.Remove(bookingId);
+    }
+
     private BookingOverview ToOverview(Booking booking)
     {
         var roomName = _roomRepository.GetById(booking.RoomId)?.Name ?? "Okänt rum";
