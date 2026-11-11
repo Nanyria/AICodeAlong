@@ -7,4 +7,9 @@
     <BlazorDisableThrowNavigationException>true</BlazorDisableThrowNavigationException>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AICodeAlong.Application\AICodeAlong.Application.csproj" />
+    <ProjectReference Include="..\AICodeAlong.Infrastructure\AICodeAlong.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

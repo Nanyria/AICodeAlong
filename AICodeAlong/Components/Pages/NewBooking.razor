@@ -1,0 +1,68 @@
+@page "/bookings/new"
+@rendermode InteractiveServer
+@inject BookingService BookingService
+@inject RoomService RoomService
+@inject NavigationManager Navigation
+
+<PageTitle>Ny bokning</PageTitle>
+
+<h1>Ny bokning</h1>
+
+<EditForm Model="model" OnSubmit="Save" FormName="new-booking">
+    <div class="mb-3">
+        <label class="form-label" for="room">Rum</label>
+        <InputSelect id="room" class="form-select" @bind-Value="model.RoomId">
+            @foreach (var room in rooms)
+            {
+                <option value="@room.Id">@room.Name (max @room.Capacity personer)</option>
+            }
+        </InputSelect>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label" for="bookedBy">Bokat av</label>
+        <InputText id="bookedBy" class="form-control" @bind-Value="model.BookedBy" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label" for="date">Datum</label>
+        <InputDate id="date" class="form-control" @bind-Value="model.Date" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label" for="guests">Antal personer</label>
+        <InputNumber id="guests" class="form-control" @bind-Value="model.Guests" />
+    </div>
+
+    @if (errorMessage is not null)
+    {
+        <div class="alert alert-danger">@errorMessage</div>
+    }
+
+    <button type="submit" class="btn btn-primary">Boka</button>
+</EditForm>
+
+@code {
+    private IReadOnlyList<Room> rooms = [];
+    private Booking model = new() { Date = DateOnly.FromDateTime(DateTime.Today), Guests = 1 };
+    private string? errorMessage;
+
+    protected override void OnInitialized()
+    {
+        rooms = RoomService.GetAll();
+    }
+
+    private void Save()
+    {
+        var result = BookingService.Create(model);
+
+        if (result.Success)
+        {
+            Navigation.NavigateTo("bookings");
+        }
+        else
+        {
+            errorMessage = result.ErrorMessage;
+        }
+    }
+}

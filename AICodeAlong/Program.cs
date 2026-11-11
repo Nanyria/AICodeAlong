@@ -1,10 +1,21 @@
+using AICodeAlong.Application.Interfaces;
+using AICodeAlong.Application.Services;
 using AICodeAlong.Components;
+using AICodeAlong.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+// Repositories (infrastrukturlagret). Singleton så att datan finns kvar medan appen körs.
+builder.Services.AddSingleton<IRoomRepository, InMemoryRoomRepository>();
+builder.Services.AddSingleton<IBookingRepository, InMemoryBookingRepository>();
+
+// Tjänster (applikationslagret).
+builder.Services.AddScoped<BookingService>();
+builder.Services.AddScoped<RoomService>();
 
 var app = builder.Build();
 

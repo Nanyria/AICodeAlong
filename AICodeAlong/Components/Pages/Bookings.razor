@@ -1,0 +1,47 @@
+@page "/bookings"
+@rendermode InteractiveServer
+@inject BookingService BookingService
+
+<PageTitle>Bokningar</PageTitle>
+
+<h1>Kommande bokningar</h1>
+
+@if (bookings.Count == 0)
+{
+    <p>Det finns inga kommande bokningar.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Datum</th>
+                <th>Rum</th>
+                <th>Bokat av</th>
+                <th>Antal personer</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var booking in bookings)
+            {
+                <tr>
+                    <td>@booking.Date</td>
+                    <td>@booking.RoomName</td>
+                    <td>@booking.BookedBy</td>
+                    <td>@booking.Guests</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<a class="btn btn-primary" href="bookings/new">Ny bokning</a>
+
+@code {
+    private IReadOnlyList<BookingOverview> bookings = [];
+
+    protected override void OnInitialized()
+    {
+        bookings = BookingService.GetUpcoming();
+    }
+}

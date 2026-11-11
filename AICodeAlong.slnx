@@ -1,3 +1,11 @@
 <Solution>
-  <Project Path="AICodeAlong/AICodeAlong.csproj" />
+  <Folder Name="/src/">
+    <Project Path="AICodeAlong.Domain/AICodeAlong.Domain.csproj" />
+    <Project Path="AICodeAlong.Application/AICodeAlong.Application.csproj" />
+    <Project Path="AICodeAlong.Infrastructure/AICodeAlong.Infrastructure.csproj" />
+    <Project Path="AICodeAlong/AICodeAlong.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="AICodeAlong.Tests/AICodeAlong.Tests.csproj" />
+  </Folder>
 </Solution>
