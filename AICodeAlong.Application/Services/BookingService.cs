@@ -59,7 +59,7 @@ public class BookingService
         }
 
         var alreadyBooked = _bookingRepository.GetAll()
-            .Any(b => b.Date == booking.Date);
+            .Any(b => b.RoomId == booking.RoomId && b.Date == booking.Date);
 
         if (alreadyBooked)
         {

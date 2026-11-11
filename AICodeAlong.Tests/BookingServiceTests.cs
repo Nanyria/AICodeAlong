@@ -44,6 +44,42 @@ public class BookingServiceTests
     }
 
     [Fact]
+    public void Create_SameRoomSameDate_ReturnsError()
+    {
+        // Arrange
+        var rooms = new FakeRoomRepository(new Room { Id = 1, Name = "Konferensrum Ek", Capacity = 8 });
+        var bookings = new FakeBookingRepository();
+        var service = new BookingService(bookings, rooms);
+        service.Create(new Booking { RoomId = 1, BookedBy = "Sara", Date = Tomorrow, Guests = 2 });
+
+        // Act
+        var result = service.Create(new Booking { RoomId = 1, BookedBy = "Ali", Date = Tomorrow, Guests = 3 });
+
+        // Assert
+        Assert.False(result.Success);
+        Assert.Single(bookings.Bookings);
+    }
+
+    [Fact]
+    public void Create_OtherRoomSameDate_Succeeds()
+    {
+        // Arrange
+        var rooms = new FakeRoomRepository(
+            new Room { Id = 1, Name = "Konferensrum Ek", Capacity = 8 },
+            new Room { Id = 2, Name = "Grupprum Björk", Capacity = 4 });
+        var bookings = new FakeBookingRepository();
+        var service = new BookingService(bookings, rooms);
+        service.Create(new Booking { RoomId = 1, BookedBy = "Sara", Date = Tomorrow, Guests = 2 });
+
+        // Act
+        var result = service.Create(new Booking { RoomId = 2, BookedBy = "Ali", Date = Tomorrow, Guests = 3 });
+
+        // Assert
+        Assert.True(result.Success);
+        Assert.Equal(2, bookings.Bookings.Count);
+    }
+
+    [Fact]
     public void Cancel_ExistingBooking_RemovesIt()
     {
         // Arrange
