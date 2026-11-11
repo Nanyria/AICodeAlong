@@ -1,10 +1,22 @@
 @page "/bookings"
 @rendermode InteractiveServer
 @inject BookingService BookingService
+@inject RoomService RoomService
 
 <PageTitle>Bokningar</PageTitle>
 
 <h1>Kommande bokningar</h1>
+
+<div class="mb-3">
+    <label class="form-label" for="roomFilter">Visa rum</label>
+    <select id="roomFilter" class="form-select" @bind="selectedRoomId" @bind:after="LoadBookings">
+        <option value="">Alla rum</option>
+        @foreach (var room in rooms)
+        {
+            <option value="@room.Id">@room.Name</option>
+        }
+    </select>
+</div>
 
 @if (bookings.Count == 0)
 {
@@ -38,10 +50,18 @@ else
 <a class="btn btn-primary" href="bookings/new">Ny bokning</a>
 
 @code {
+    private IReadOnlyList<Room> rooms = [];
     private IReadOnlyList<BookingOverview> bookings = [];
+    private int? selectedRoomId;
 
     protected override void OnInitialized()
     {
-        bookings = BookingService.GetUpcoming();
+        rooms = RoomService.GetAll();
+        LoadBookings();
+    }
+
+    private void LoadBookings()
+    {
+        bookings = BookingService.GetUpcoming(selectedRoomId);
     }
 }

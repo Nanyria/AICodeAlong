@@ -15,12 +15,14 @@ public class BookingService
     }
 
     // Alla bokningar från och med idag, sorterade på datum.
-    public IReadOnlyList<BookingOverview> GetUpcoming()
+    // Skicka med ett roomId för att bara få bokningarna för det rummet.
+    public IReadOnlyList<BookingOverview> GetUpcoming(int? roomId = null)
     {
         var today = DateOnly.FromDateTime(DateTime.Today);
 
         return _bookingRepository.GetAll()
             .Where(b => b.Date >= today)
+            .Where(b => roomId == null || b.RoomId == roomId)
             .OrderBy(b => b.Date)
             .Select(ToOverview)
             .ToList();
