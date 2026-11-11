@@ -50,6 +50,10 @@
     protected override void OnInitialized()
     {
         rooms = RoomService.GetAll();
+
+        // Listan visar första rummet, men värdet är 0 tills man väljer något.
+        // Därför sätter vi första rummet som förvalt här.
+        model.RoomId = rooms.FirstOrDefault()?.Id ?? 0;
     }
 
     private void Save()

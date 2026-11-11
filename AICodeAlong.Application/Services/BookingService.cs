@@ -42,14 +42,15 @@ public class BookingService
 
         var room = _roomRepository.GetById(booking.RoomId);
 
-        if (booking.Guests > room.Capacity)
-        {
-            return BookingResult.Fail($"{room.Name} har bara plats för {room.Capacity} personer.");
-        }
-
+        // Kontrollera att rummet finns innan vi använder det.
         if (room is null)
         {
             return BookingResult.Fail("Rummet finns inte.");
+        }
+
+        if (booking.Guests > room.Capacity)
+        {
+            return BookingResult.Fail($"{room.Name} har bara plats för {room.Capacity} personer.");
         }
 
         if (booking.Date < DateOnly.FromDateTime(DateTime.Today))
